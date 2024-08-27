@@ -1,4 +1,4 @@
-package com.caizin.springboot.demo.myspringapp.components;
+package com.caizin.springboot.demo.testscan;
 
 import com.caizin.springboot.demo.myspringapp.interfaces.Coach;
 import org.springframework.stereotype.Component;
