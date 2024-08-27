@@ -11,6 +11,7 @@ public class CoachController2 {
 
     @Autowired // the method name can be anything
     public void setCoach(Coach myCoach) {
+        System.out.println("In constructor: " + getClass().getSimpleName());
         this.myCoach = myCoach;
     }
 

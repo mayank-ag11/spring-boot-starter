@@ -12,6 +12,7 @@ public class CoachController {
 
     @Autowired // Autowired annotation optional if only one constructor
     public CoachController(@Qualifier("cricketCoach") Coach myCoach) {
+        System.out.println("In constructor: " + getClass().getSimpleName());
         this.myCoach = myCoach;
     }
 

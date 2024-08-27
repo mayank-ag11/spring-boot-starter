@@ -12,6 +12,10 @@ public class AppRestController {
     @Value("${team.name}")
     private String teamName;
 
+    public AppRestController() {
+        System.out.println("In constructor: " + getClass().getSimpleName());
+    }
+
     @GetMapping("/")
     public String sayHello() {
         return "Hello World";
