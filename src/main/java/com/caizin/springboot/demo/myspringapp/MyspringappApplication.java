@@ -25,7 +25,7 @@ public class MyspringappApplication {
 	public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
 		return runner -> {
 			// createStudent(studentDAO);
-			// createMultipleStudents(studentDAO);
+			createMultipleStudents(studentDAO);
 
 			// readStudent(studentDAO);
 			// queryForStudents(studentDAO);
@@ -34,7 +34,7 @@ public class MyspringappApplication {
 			// updateStudent(studentDAO);
 
 			// deleteStudent(studentDAO);
-			deleteAllStudents(studentDAO);
+			// deleteAllStudents(studentDAO);
 		};
 	}
 
