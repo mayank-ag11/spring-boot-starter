@@ -29,8 +29,23 @@ public class MyspringappApplication {
 
 			// readStudent(studentDAO);
 			// queryForStudents(studentDAO);
-			queryForStudentsByLastName(studentDAO);
+			// queryForStudentsByLastName(studentDAO);
+
+			updateStudent(studentDAO);
 		};
+	}
+
+	private void updateStudent(StudentDAO studentDAO) {
+		int id = 4;
+		System.out.println("Getting student with id: " + id);
+		Student student = studentDAO.findById(id);
+
+		System.out.println("Updating student...");
+		student.setFirstName("Krish");
+		student.setEmail("krish@gmail.com");
+
+		studentDAO.update(student);
+		System.out.println("Updated student: " + student);
 	}
 
 	private void queryForStudentsByLastName(StudentDAO studentDAO) {
