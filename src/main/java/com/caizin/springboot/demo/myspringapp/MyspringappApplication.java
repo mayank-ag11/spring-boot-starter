@@ -23,18 +23,30 @@ public class MyspringappApplication {
 	public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
 		return runner -> {
 			// createStudent(studentDAO);
-			createMultipleStudents(studentDAO);
+			// createMultipleStudents(studentDAO);
+
+			readStudent(studentDAO);
 		};
 	}
 
-	private void createStudent(StudentDAO studentDAO) {
+	private void readStudent(StudentDAO studentDAO) {
+		int id = createStudent(studentDAO);
+		System.out.println("Retrieving the student with id: " + id);
+		Student student = studentDAO.findById(id);
+
+		System.out.println("Found the student: " + student);
+	}
+
+	private int createStudent(StudentDAO studentDAO) {
 		System.out.println("Creating new student object...");
 		Student student = new Student("Mayank", "Agrawal", "mayank@gmail.com");
 
 		System.out.println("Saving the student...");
 		studentDAO.save(student);
 
-		System.out.println("Saved student. Generated id: " + student.getId());
+		int id = student.getId();
+		System.out.println("Saved student. Generated id: " + id);
+		return id;
 	}
 
 	private void createMultipleStudents(StudentDAO studentDAO) {
