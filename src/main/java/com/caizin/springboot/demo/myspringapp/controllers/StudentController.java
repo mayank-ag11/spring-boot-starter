@@ -2,10 +2,12 @@ package com.caizin.springboot.demo.myspringapp.controllers;
 
 import com.caizin.springboot.demo.myspringapp.dao.StudentDAO;
 import com.caizin.springboot.demo.myspringapp.entities.Student;
+import com.caizin.springboot.demo.myspringapp.error.ErrorResponse;
+import com.caizin.springboot.demo.myspringapp.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +24,27 @@ public class StudentController {
     @GetMapping()
     public List<Student> getStudents() {
         return studentDAO.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Student getStudent(@PathVariable int id) {
+        Student student = studentDAO.findById(id);
+
+        if(student == null) {
+            throw new NotFoundException("Student not found for id: " + id);
+        }
+
+        return student;
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleException(NotFoundException exc) {
+        ErrorResponse error = new ErrorResponse();
+
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setMessage(exc.getMessage());
+        error.setTimeStamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }
