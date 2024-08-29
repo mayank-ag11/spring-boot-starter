@@ -24,8 +24,10 @@ public class MyspringappApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
 		return runner -> {
+			System.out.println("App started!");
+
 			// createStudent(studentDAO);
-			createMultipleStudents(studentDAO);
+			// createMultipleStudents(studentDAO);
 
 			// readStudent(studentDAO);
 			// queryForStudents(studentDAO);
