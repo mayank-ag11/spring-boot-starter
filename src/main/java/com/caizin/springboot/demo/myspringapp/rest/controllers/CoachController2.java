@@ -1,23 +1,22 @@
-package com.caizin.springboot.demo.myspringapp.controllers;
+package com.caizin.springboot.demo.myspringapp.rest.controllers;
 
 import com.caizin.springboot.demo.myspringapp.interfaces.Coach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class CoachController {
-    private final Coach myCoach;
+public class CoachController2 {
+    private Coach myCoach;
 
-    @Autowired // Autowired annotation optional if only one constructor
-    public CoachController(@Qualifier("aquatic") Coach myCoach) {
+    @Autowired // the method name can be anything
+    public void setCoach(Coach myCoach) {
         System.out.println("In constructor: " + getClass().getSimpleName());
         this.myCoach = myCoach;
     }
 
-    @GetMapping("/daily-workout")
+    @GetMapping("/daily-workout-2")
     public String getDailyWorkout() {
-        return myCoach.getDailyWorkout();
+        return myCoach.getDailyWorkout() + " (V2)";
     }
 }

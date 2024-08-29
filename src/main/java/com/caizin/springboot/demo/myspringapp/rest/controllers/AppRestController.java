@@ -1,4 +1,4 @@
-package com.caizin.springboot.demo.myspringapp.controllers;
+package com.caizin.springboot.demo.myspringapp.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;

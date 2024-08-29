@@ -1,4 +1,4 @@
-package com.caizin.springboot.demo.myspringapp.exceptions;
+package com.caizin.springboot.demo.myspringapp.rest.exceptions;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

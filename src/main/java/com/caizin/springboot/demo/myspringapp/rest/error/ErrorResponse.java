@@ -1,4 +1,4 @@
-package com.caizin.springboot.demo.myspringapp.error;
+package com.caizin.springboot.demo.myspringapp.rest.error;
 
 public class ErrorResponse {
     private int status;
