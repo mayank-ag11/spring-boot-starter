@@ -33,4 +33,9 @@ public class StudentController {
 
         return student;
     }
+
+    @PostMapping()
+    public Student addStudent(@RequestBody Student student) {
+        return service.save(student);
+    }
 }
