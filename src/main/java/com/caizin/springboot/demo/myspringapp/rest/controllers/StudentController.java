@@ -38,4 +38,21 @@ public class StudentController {
     public Student addStudent(@RequestBody Student student) {
         return service.save(student);
     }
+
+    @PutMapping()
+    public Student updateStudent(@RequestBody Student student) {
+        return service.update(student);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteStudent(@PathVariable int id) {
+        Student student = service.findById(id);
+
+        if(student == null) {
+            throw new NotFoundException("Student not found for id: " + id);
+        }
+
+        service.delete(id);
+        return "Deleted student id: " + id;
+    }
 }

@@ -5,10 +5,11 @@ import com.caizin.springboot.demo.myspringapp.rest.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ExceptionHandler {
-    @org.springframework.web.bind.annotation.ExceptionHandler
+public class RestExceptionHandler {
+    @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(NotFoundException exc) {
         ErrorResponse error = new ErrorResponse();
 
@@ -19,7 +20,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler
+    @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(Exception exc) {
         ErrorResponse error = new ErrorResponse();
 
