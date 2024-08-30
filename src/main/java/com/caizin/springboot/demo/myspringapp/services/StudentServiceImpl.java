@@ -1,47 +1,50 @@
 package com.caizin.springboot.demo.myspringapp.services;
 
-import com.caizin.springboot.demo.myspringapp.dao.StudentDAO;
+import com.caizin.springboot.demo.myspringapp.dao.StudentRepository;
 import com.caizin.springboot.demo.myspringapp.entities.Student;
+import com.caizin.springboot.demo.myspringapp.rest.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService{
-    private final StudentDAO studentDAO;
+    private final StudentRepository repository;
 
     @Autowired
-    public StudentServiceImpl(StudentDAO studentDAO) {
-        this.studentDAO = studentDAO;
+    public StudentServiceImpl(StudentRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    @Transactional
     public Student save(Student student) {
-        return studentDAO.save(student);
+        return repository.save(student);
     }
 
     @Override
     public Student findById(Integer id) {
-        return studentDAO.findById(id);
+        Optional<Student> student = repository.findById(id);
+
+        if(student.isEmpty()) throw new NotFoundException("Student not found for id: " + id);
+
+        return student.get();
     }
 
     @Override
     public List<Student> findAll() {
-        return studentDAO.findAll();
+        return repository.findAll();
     }
 
     @Override
-    @Transactional
     public Student update(Student student) {
-        return studentDAO.update(student);
+        return repository.save(student);
     }
 
     @Override
-    @Transactional
     public void delete(Integer id) {
-        studentDAO.delete(id);
+        findById(id);
+        repository.deleteById(id);
     }
 }

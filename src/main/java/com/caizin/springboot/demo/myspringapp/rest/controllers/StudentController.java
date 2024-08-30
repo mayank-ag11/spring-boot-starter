@@ -1,7 +1,6 @@
 package com.caizin.springboot.demo.myspringapp.rest.controllers;
 
 import com.caizin.springboot.demo.myspringapp.entities.Student;
-import com.caizin.springboot.demo.myspringapp.rest.exceptions.NotFoundException;
 import com.caizin.springboot.demo.myspringapp.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +24,7 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public Student getStudent(@PathVariable int id) {
-        Student student = service.findById(id);
-
-        if(student == null) {
-            throw new NotFoundException("Student not found for id: " + id);
-        }
-
-        return student;
+        return service.findById(id);
     }
 
     @PostMapping()
@@ -46,12 +39,6 @@ public class StudentController {
 
     @DeleteMapping("/{id}")
     public String deleteStudent(@PathVariable int id) {
-        Student student = service.findById(id);
-
-        if(student == null) {
-            throw new NotFoundException("Student not found for id: " + id);
-        }
-
         service.delete(id);
         return "Deleted student id: " + id;
     }
