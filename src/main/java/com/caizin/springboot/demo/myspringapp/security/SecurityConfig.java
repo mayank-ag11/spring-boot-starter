@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,16 +23,25 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Note: "/api/*" for matching exactly one path segment under "/api"
         // "/api/**" for matching any number of path segments under "/api"
-        http
-            .csrf((csrf) -> csrf
-                    .ignoringRequestMatchers("/api/**")
-            )
-            .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(HttpMethod.DELETE, "/api/**")
-                    .hasRole("ADMIN").anyRequest().authenticated()
-            )
-            .formLogin(Customizer.withDefaults())
-            .httpBasic(Customizer.withDefaults());
+
+        http.authorizeHttpRequests(configurer ->
+                configurer
+                        .requestMatchers(HttpMethod.GET, "/api/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
+        );
+
+        // Disable Cross Site Request Forgery (CSRF)
+        // In general, not required for stateless REST APIs that use POST, PUT, PATCH or DELETE
+        http.csrf(AbstractHttpConfigurer::disable);
+        // http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"));
+
+        // Use HTTP Basic Auth
+        http.httpBasic(Customizer.withDefaults());
+
+        // Use the default login page
+        http.formLogin(Customizer.withDefaults());
 
         return http.build();
     }
@@ -40,18 +50,21 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user = User.builder()
                 .username("user")
+                // .password("{noop}user") // plain text password
                 .password(passwordEncoder.encode("user")) // Encode password
                 .roles("USER")
                 .build();
 
         UserDetails manager = User.builder()
                 .username("manager")
-                .password("{noop}manager") // plaintext password
+                // .password("{noop}manager")
+                .password(passwordEncoder.encode("manager")) // Encode password
                 .roles("USER", "MANAGER")
                 .build();
 
         UserDetails admin = User.builder()
                 .username("admin")
+                // .password("{noop}admin")
                 .password(passwordEncoder.encode("admin")) // Encode password
                 .roles("USER", "MANAGER", "ADMIN")
                 .build();
