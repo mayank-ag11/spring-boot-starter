@@ -26,9 +26,9 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers(HttpMethod.GET, "/api/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.POST, "/api/**").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/**").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/**").hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
         );
 
@@ -59,14 +59,14 @@ public class SecurityConfig {
                 .username("manager")
                 // .password("{noop}manager")
                 .password(passwordEncoder.encode("manager")) // Encode password
-                .roles("USER", "MANAGER")
+                .roles("MANAGER")
                 .build();
 
         UserDetails admin = User.builder()
                 .username("admin")
                 // .password("{noop}admin")
                 .password(passwordEncoder.encode("admin")) // Encode password
-                .roles("USER", "MANAGER", "ADMIN")
+                .roles("ADMIN")
                 .build();
 
         return new InMemoryUserDetailsManager(user, manager, admin);
