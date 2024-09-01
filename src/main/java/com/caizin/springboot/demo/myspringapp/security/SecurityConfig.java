@@ -1,4 +1,4 @@
-package com.caizin.springboot.demo.myspringapp.config;
+package com.caizin.springboot.demo.myspringapp.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,13 +44,19 @@ public class SecurityConfig {
                 .roles("USER")
                 .build();
 
+        UserDetails manager = User.builder()
+                .username("manager")
+                .password("{noop}manager") // plaintext password
+                .roles("USER", "MANAGER")
+                .build();
+
         UserDetails admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("admin")) // Encode password
-                .roles("ADMIN")
+                .roles("USER", "MANAGER", "ADMIN")
                 .build();
 
-        return new InMemoryUserDetailsManager(user, admin);
+        return new InMemoryUserDetailsManager(user, manager, admin);
     }
 
     @Bean
